@@ -25,12 +25,26 @@
                             }
                         },
                         cadrez: {
-                            c: '#ea8e24', /* Orange Collaborateur */
-                            a: '#f7b42c', /* Jaune Action */
-                            d: '#4caf50', /* Vert Description */
-                            r: '#29b6f6', /* Bleu Ressources */
-                            e: '#1e88e5', /* Bleu foncé Exigences */
-                            z: '#9c27b0', /* Violet Zéro oubli */
+                            c: '#ea8e24',
+                            a: '#f7b42c',
+                            d: '#4caf50',
+                            r: '#29b6f6',
+                            e: '#1e88e5',
+                            z: '#9c27b0',
+                        }
+                    },
+                    animation: {
+                        'slide-in': 'slideIn 0.3s ease-out',
+                        'fade-in': 'fadeIn 0.2s ease-out',
+                    },
+                    keyframes: {
+                        slideIn: {
+                            '0%': { transform: 'translateX(100%)' },
+                            '100%': { transform: 'translateX(0)' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
                         }
                     }
                 }
@@ -54,19 +68,16 @@
         .m3-label { position: absolute; left: 16px; top: 18px; font-size: 1rem; color: #444746; pointer-events: none; transition: 0.2s ease all; max-width: 90%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .m3-input:focus ~ .m3-label, .m3-input:not(:placeholder-shown) ~ .m3-label { top: 6px; font-size: 0.75rem; color: #0b57d0; font-weight: 500; }
         
-        /* Select Chevron Fix */
         select.m3-input { appearance: none; cursor: pointer; }
         .m3-select-wrapper { position: relative; }
         .m3-select-wrapper::after { content: '\f078'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; right: 16px; top: 50%; transform: translateY(-25%); font-size: 0.75rem; color: #444746; pointer-events: none; }
 
-        /* Checkbox */
         .m3-checkbox-container { display: flex; align-items: center; cursor: pointer; padding: 8px 0; }
         .m3-checkbox { appearance: none; background-color: #fff; width: 1.25em; height: 1.25em; border: 2px solid #747775; border-radius: 2px; display: grid; place-content: center; margin-right: 12px; transition: 0.2s all; }
         .m3-checkbox::before { content: ""; width: 0.75em; height: 0.75em; transform: scale(0); transition: 120ms transform ease-in-out; box-shadow: inset 1em 1em white; clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%); }
         .m3-checkbox:checked { background-color: #9c27b0; border-color: #9c27b0; }
         .m3-checkbox:checked::before { transform: scale(1); }
 
-        /* CADREZ Colors */
         .c-text { color: #ea8e24; } .c-bg { background-color: #ea8e24; }
         .a-text { color: #f7b42c; } .a-bg { background-color: #f7b42c; }
         .d-text { color: #4caf50; } .d-bg { background-color: #4caf50; }
@@ -76,21 +87,22 @@
 
         .cadrez-letter { font-weight: 900; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 6px; color: white; margin-right: 12px; font-size: 0.9rem; flex-shrink: 0; }
         
-        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #c4c7c5; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #747775; }
-
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Modal / Overlay styles */
+        .modal-overlay { background-color: rgba(0,0,0,0.4); backdrop-filter: blur(2px); }
     </style>
 </head>
 
 <body class="h-dvh w-screen overflow-hidden flex flex-col md:flex-row text-[#1f1f1f]">
 
     <!-- EDITOR PANEL (Left) -->
-    <aside id="panel-editor" class="w-full md:w-[500px] flex-col h-full bg-white border-r border-[#c4c7c5] z-20 shadow-lg flex">
+    <aside id="panel-editor" class="w-full md:w-[500px] flex-col h-full bg-white border-r border-[#c4c7c5] z-20 shadow-lg flex relative">
         <header class="p-4 flex items-center justify-between border-b border-gray-100 flex-none bg-white">
             <div class="flex items-center gap-2">
                 <div class="flex gap-0.5">
@@ -104,6 +116,15 @@
                 <h1 class="text-xl font-normal tracking-tight text-[#444746]">Plan<span class="font-medium text-black">Promptable</span></h1>
             </div>
             <div class="flex items-center gap-2">
+                <button onclick="toggleTemplates()" class="text-purple-600 hover:bg-purple-50 p-2 rounded-full transition relative group" title="Modèles">
+                    <i class="fas fa-wand-magic-sparkles"></i>
+                    <span class="absolute top-10 right-0 bg-gray-800 text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap pointer-events-none z-50">Modèles</span>
+                </button>
+                <button onclick="toggleHistory()" class="text-blue-600 hover:bg-blue-50 p-2 rounded-full transition relative group" title="Historique">
+                    <i class="fas fa-history"></i>
+                    <span class="absolute top-10 right-0 bg-gray-800 text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap pointer-events-none z-50">Historique</span>
+                </button>
+                <div class="w-px h-6 bg-gray-200 mx-1"></div>
                 <button onclick="toggleLanguage()" class="text-xs font-medium text-md-sys-primary hover:bg-blue-50 px-3 py-1.5 rounded-full transition border border-blue-100 uppercase">
                     <span id="lang-display">FR</span>
                 </button>
@@ -112,6 +133,32 @@
                 </button>
             </div>
         </header>
+
+        <!-- TEMPLATES MODAL -->
+        <div id="templates-modal" class="hidden absolute inset-0 z-30 bg-white flex flex-col animate-fade-in">
+            <div class="p-4 border-b border-gray-100 flex justify-between items-center bg-purple-50">
+                <h3 class="font-bold text-purple-800 flex items-center gap-2"><i class="fas fa-wand-magic-sparkles"></i> <span id="lbl-tpl-title">Modèles Prêts à l'emploi</span></h3>
+                <button onclick="toggleTemplates()" class="text-gray-500 hover:text-gray-800"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="p-4 overflow-y-auto space-y-2 flex-grow" id="templates-list">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+
+        <!-- HISTORY MODAL -->
+        <div id="history-modal" class="hidden absolute inset-0 z-30 bg-white flex flex-col animate-fade-in">
+            <div class="p-4 border-b border-gray-100 flex justify-between items-center bg-blue-50">
+                <h3 class="font-bold text-blue-800 flex items-center gap-2"><i class="fas fa-history"></i> <span id="lbl-hist-title">Historique Local</span></h3>
+                <div class="flex gap-2">
+                    <button onclick="saveToHistory()" class="text-xs bg-blue-600 text-white px-3 py-1 rounded-full hover:bg-blue-700 transition" id="btn-save-current">+ <span id="lbl-save">Sauvegarder</span></button>
+                    <button onclick="toggleHistory()" class="text-gray-500 hover:text-gray-800 px-2"><i class="fas fa-times"></i></button>
+                </div>
+            </div>
+            <div class="p-4 overflow-y-auto space-y-3 flex-grow bg-gray-50" id="history-list">
+                <!-- Populated by JS -->
+                <div class="text-center text-gray-400 mt-10 italic" id="lbl-no-history">Aucun historique récent.</div>
+            </div>
+        </div>
 
         <div class="flex-grow overflow-y-auto p-5 space-y-8 pb-4">
             
@@ -227,7 +274,7 @@
                 </label>
             </div>
             
-            <!-- Mobile Footer (Visible only on mobile inside scroll) -->
+            <!-- Mobile Footer -->
             <div class="md:hidden pt-8 pb-4 text-center border-t border-gray-100 mt-4">
                 <p class="text-xs text-gray-500 mb-2"><span id="lbl-developed-mobile">Développé par</span> <strong class="text-gray-700">Fabrice Faucheux</strong></p>
                 <a href="https://paypal.me/FFaucheux?country.x=FR&locale.x=fr_FR" target="_blank" class="text-xs inline-flex items-center gap-2 px-4 py-2 bg-[#003087] text-white rounded-full hover:bg-[#001c64] transition shadow-sm font-medium">
@@ -250,14 +297,19 @@
     <!-- PREVIEW PANEL (Right) -->
     <main id="panel-preview" class="hidden md:flex flex-grow flex-col h-full bg-md-sys-surface overflow-hidden relative">
         <div class="flex-none px-6 pt-6 pb-3 flex justify-between items-end">
-            <!-- Simplified Header (No Tabs) -->
+            <!-- Simplified Header -->
             <div class="flex bg-white rounded-full p-1 shadow-sm border border-gray-200">
                 <div class="px-5 py-2 rounded-full text-sm flex items-center gap-2 bg-[#d3e3fd] text-[#041e49] font-semibold select-none">
                     <i class="fas fa-sparkles text-lg"></i> <span id="lbl-preview">Aperçu</span>
                 </div>
             </div>
             
-            <div class="flex gap-2">
+            <div class="flex gap-3 items-center">
+                <!-- Token Counter -->
+                <div class="bg-white/80 px-3 py-1.5 rounded-lg border border-gray-200 text-xs font-mono text-gray-500" title="Estimation Tokens (Approx)">
+                    <i class="fas fa-microchip mr-1"></i> <span id="token-count">0</span> toks
+                </div>
+
                  <button onclick="copyContent()" class="bg-[#1f1f1f] hover:bg-black text-white pl-4 pr-5 py-2.5 rounded-full shadow-lg hover:shadow-xl transition-all flex items-center gap-2 text-sm font-medium group">
                     <i class="far fa-copy group-hover:scale-110 transition-transform"></i> <span id="btn-copy-txt">Copier</span>
                 </button>
@@ -328,7 +380,8 @@
                 "lbl-developed": "Développé par", "lbl-tip": "M'offrir un pourboire",
                 "lbl-developed-mobile": "Développé par", "lbl-tip-mobile": "M'offrir un pourboire",
                 "lbl-nav-edit": "Éditer", "lbl-nav-view": "Résultat", "lbl-mob-title": "Votre Prompt", "btn-mob-copy": "Copier", "txt-toast": "Prompt copié !",
-                "btn-tag-target": "+ Cible", "btn-tag-tech": "+ Technique", "btn-tag-biz": "+ Business"
+                "btn-tag-target": "+ Cible", "btn-tag-tech": "+ Technique", "btn-tag-biz": "+ Business",
+                "lbl-tpl-title": "Modèles Prêts à l'emploi", "lbl-hist-title": "Historique Local", "lbl-save": "Sauvegarder", "lbl-no-history": "Aucun historique récent."
             },
             en: {
                 "txt-c-title": "Collaborator", "txt-c-sub": "You are...", "lbl-c-select": "Expertise (Suggestion)", "lbl-c-custom": "Custom Role",
@@ -341,7 +394,8 @@
                 "lbl-developed": "Developed by", "lbl-tip": "Leave a tip",
                 "lbl-developed-mobile": "Developed by", "lbl-tip-mobile": "Leave a tip",
                 "lbl-nav-edit": "Edit", "lbl-nav-view": "Result", "lbl-mob-title": "Your Prompt", "btn-mob-copy": "Copy", "txt-toast": "Prompt Copied!",
-                "btn-tag-target": "+ Target", "btn-tag-tech": "+ Tech", "btn-tag-biz": "+ Business"
+                "btn-tag-target": "+ Target", "btn-tag-tech": "+ Tech", "btn-tag-biz": "+ Business",
+                "lbl-tpl-title": "Ready-to-use Templates", "lbl-hist-title": "Local History", "lbl-save": "Save Current", "lbl-no-history": "No recent history."
             }
         };
 
@@ -396,10 +450,35 @@
             }
         };
 
-        let state = { lang: 'fr' };
+        const templates = [
+            {
+                name: "📝 Article de Blog SEO",
+                data: { c: "Expert SEO & Copywriter", a: "Rédiger un article optimisé", d: "Sujet : [Insérer sujet]. Audience : Grand public. Mots-clés : [Liste].", r: "Structure Hn, Maillage interne", e_tone: "Pédagogique", e_format: "Texte libre", e_const: "Pas de phrases trop longues" }
+            },
+            {
+                name: "👔 Synthèse de Réunion",
+                data: { c: "Assistant de Direction", a: "Synthétiser", d: "Réunion sur le projet [Nom]. Durée 1h. Décisions prises et actions à suivre.", r: "Notes brutes : [Coller notes]", e_tone: "Professionnel", e_format: "Compte-rendu", e_const: "Rester factuel" }
+            },
+            {
+                name: "📧 Email de Prospection",
+                data: { c: "Business Developer", a: "Rédiger un email de contact", d: "Cible : DRH de PME. Offre : Logiciel de paie. Pain point : Gain de temps.", r: "AIDA (Marketing)", e_tone: "Persuasif", e_format: "Email", e_const: "Max 150 mots" }
+            },
+            {
+                name: "💻 Explication de Code",
+                data: { c: "Senior Developer", a: "Expliquer ce code", d: "Code source fourni ci-dessous. Destinataire : Junior Dev.", r: "[Coller Code]", e_tone: "Pédagogique", e_format: "Texte libre", e_const: "Pas de jargon inutile" }
+            },
+            {
+                name: "📊 Analyse de Données",
+                data: { c: "Data Analyst", a: "Analyser les tendances", d: "Données de ventes Q1-Q2. Marché en baisse.", r: "[Coller CSV/Data]", e_tone: "Analytique", e_format: "Liste à puces", e_const: "Focaliser sur les anomalies" }
+            }
+        ];
+
+        let state = { lang: 'fr', history: [] };
 
         function init() {
             renderSelects();
+            renderTemplates();
+            loadHistory();
             applyTranslations();
             updateOutput();
         }
@@ -416,7 +495,6 @@
             const t = uiTranslations[state.lang];
             for (const [id, text] of Object.entries(t)) {
                 const el = document.getElementById(id);
-                // Utilisation de innerHTML au lieu de innerText pour interpréter les balises <br>
                 if (el) el.innerHTML = text;
             }
         }
@@ -424,26 +502,19 @@
         function renderSelects() {
             const d = data[state.lang];
             
-            // Helper for grouped selects
             const fillGrouped = (id, dataObj) => {
                 const el = document.getElementById(id);
-                const currentVal = el.value; // Try to preserve selection if possible (mostly for simple switches)
                 let html = `<option value="">- ${state.lang === 'fr' ? 'Sélectionner' : 'Select'} -</option>`;
-                
                 for (const [group, items] of Object.entries(dataObj)) {
                     html += `<optgroup label="${group}">`;
-                    items.forEach(item => {
-                        html += `<option value="${item}">${item}</option>`;
-                    });
+                    items.forEach(item => { html += `<option value="${item}">${item}</option>`; });
                     html += `</optgroup>`;
                 }
                 el.innerHTML = html;
             };
 
-            // Helper for simple selects
             const fillSimple = (id, list) => {
                 const el = document.getElementById(id);
-                const currentVal = el.value;
                 el.innerHTML = [`<option value="">- ${state.lang === 'fr' ? 'Sélectionner' : 'Select'} -</option>`, ...list.map(l => `<option value="${l}">${l}</option>`)].join('');
             };
 
@@ -462,7 +533,7 @@
 
         function syncAction() {
             const val = document.getElementById('action-select').value;
-            if (val) document.getElementById('task').value = val + " "; // Add space for continuity
+            if (val) document.getElementById('task').value = val + " ";
             updateOutput();
         }
         
@@ -474,12 +545,125 @@
         }
 
         function resetForm() {
+            if(!confirm("Tout effacer ? / Clear all?")) return;
             document.querySelectorAll('input[type="text"], textarea').forEach(el => el.value = '');
             document.querySelectorAll('select').forEach(el => el.selectedIndex = 0);
             document.getElementById('zero-forget').checked = true;
             updateOutput();
         }
 
+        // --- TEMPLATES ---
+        function toggleTemplates() {
+            const modal = document.getElementById('templates-modal');
+            modal.classList.toggle('hidden');
+            document.getElementById('history-modal').classList.add('hidden');
+        }
+
+        function renderTemplates() {
+            const list = document.getElementById('templates-list');
+            list.innerHTML = templates.map((t, idx) => `
+                <div onclick="loadTemplate(${idx})" class="p-3 bg-white border border-gray-200 rounded-lg hover:border-purple-300 hover:shadow-md cursor-pointer transition flex items-center justify-between group">
+                    <span class="font-medium text-gray-700 group-hover:text-purple-700">${t.name}</span>
+                    <i class="fas fa-chevron-right text-gray-300 group-hover:text-purple-500"></i>
+                </div>
+            `).join('');
+        }
+
+        function loadTemplate(idx) {
+            const t = templates[idx].data;
+            document.getElementById('role-custom').value = t.c || "";
+            document.getElementById('task').value = t.a || "";
+            document.getElementById('context').value = t.d || "";
+            document.getElementById('resources').value = t.r || "";
+            document.getElementById('tone').value = t.e_tone || "";
+            document.getElementById('format').value = t.e_format || "";
+            document.getElementById('constraints').value = t.e_const || "";
+            toggleTemplates();
+            updateOutput();
+        }
+
+        // --- HISTORY ---
+        function toggleHistory() {
+            const modal = document.getElementById('history-modal');
+            modal.classList.toggle('hidden');
+            document.getElementById('templates-modal').classList.add('hidden');
+            renderHistory();
+        }
+
+        function saveToHistory() {
+            const entry = {
+                timestamp: new Date().toLocaleString(),
+                c: document.getElementById('role-custom').value,
+                a: document.getElementById('task').value,
+                d: document.getElementById('context').value,
+                r: document.getElementById('resources').value,
+                e_tone: document.getElementById('tone').value,
+                e_format: document.getElementById('format').value,
+                e_const: document.getElementById('constraints').value
+            };
+            
+            // Avoid empty saves
+            if (!entry.c && !entry.a) return;
+
+            let history = JSON.parse(localStorage.getItem('cadrez_history') || '[]');
+            history.unshift(entry);
+            if (history.length > 10) history.pop(); // Keep last 10
+            localStorage.setItem('cadrez_history', JSON.stringify(history));
+            renderHistory();
+            
+            // Feedback
+            const btn = document.getElementById('btn-save-current');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-check"></i>';
+            setTimeout(() => btn.innerHTML = originalText, 1000);
+        }
+
+        function loadHistory() {
+             // Just ensures it is in localstorage
+        }
+
+        function renderHistory() {
+            const list = document.getElementById('history-list');
+            const history = JSON.parse(localStorage.getItem('cadrez_history') || '[]');
+            
+            document.getElementById('lbl-no-history').style.display = history.length === 0 ? 'block' : 'none';
+            
+            list.innerHTML = history.map((h, idx) => `
+                <div class="p-3 bg-white border border-gray-200 rounded-lg hover:shadow-md transition group relative">
+                    <div class="text-[10px] text-gray-400 mb-1">${h.timestamp}</div>
+                    <div class="font-medium text-sm text-gray-800 truncate">C: ${h.c || '-'}</div>
+                    <div class="text-xs text-gray-500 truncate">A: ${h.a || '-'}</div>
+                    
+                    <div class="mt-2 flex gap-2">
+                        <button onclick="restoreHistory(${idx})" class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded hover:bg-blue-100">Charger</button>
+                        <button onclick="deleteHistory(${idx})" class="text-xs text-red-400 hover:text-red-600 px-2 py-1"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function restoreHistory(idx) {
+            const history = JSON.parse(localStorage.getItem('cadrez_history') || '[]');
+            const h = history[idx];
+            document.getElementById('role-custom').value = h.c || "";
+            document.getElementById('task').value = h.a || "";
+            document.getElementById('context').value = h.d || "";
+            document.getElementById('resources').value = h.r || "";
+            document.getElementById('tone').value = h.e_tone || "";
+            document.getElementById('format').value = h.e_format || "";
+            document.getElementById('constraints').value = h.e_const || "";
+            toggleHistory();
+            updateOutput();
+        }
+
+        function deleteHistory(idx) {
+            let history = JSON.parse(localStorage.getItem('cadrez_history') || '[]');
+            history.splice(idx, 1);
+            localStorage.setItem('cadrez_history', JSON.stringify(history));
+            renderHistory();
+        }
+
+        // --- CORE ---
         function updateOutput() {
             const role = document.getElementById('role-custom').value;
             const task = document.getElementById('task').value;
@@ -499,7 +683,7 @@
             const t = state.lang === 'fr' ? { c: "Tu es", a: "Ta mission est de", d: "Le contexte est", r: "Tu t'appuieras sur", e: "Exigences", tone: "Ton", fmt: "Format", cstr: "Contraintes", useMethod: "Utilise la méthode" } 
                                           : { c: "You are", a: "Your mission is to", d: "The context is", r: "You will rely on", e: "Requirements", tone: "Tone", fmt: "Format", cstr: "Constraints", useMethod: "Use the method" };
 
-            // Construction du prompt avec les mots-clés CADREZ en gras
+            // Construction du prompt
             if (role) prompt += `**${t.c}** : ${role}.\n\n`;
             if (task) prompt += `**${t.a}** : ${task}\n\n`;
             if (context) prompt += `**${t.d}** : ${context}\n\n`;
@@ -524,6 +708,15 @@
 
             document.getElementById('markdown-content').innerText = prompt;
             document.getElementById('mobile-markdown-content').innerText = prompt;
+            
+            // Token Estimation (Roughly 1 token = 4 chars for English, a bit more for French)
+            const charCount = prompt.length;
+            const tokenEst = Math.ceil(charCount / 3.5); // Approximation for mixed content
+            const tokenEl = document.getElementById('token-count');
+            tokenEl.innerText = tokenEst;
+            
+            if(tokenEst > 4000) tokenEl.classList.add('text-red-500');
+            else tokenEl.classList.remove('text-red-500');
         }
 
         function copyContent() {
