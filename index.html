@@ -76,10 +76,6 @@
 
         .cadrez-letter { font-weight: 900; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 6px; color: white; margin-right: 12px; font-size: 0.9rem; flex-shrink: 0; }
         
-        /* Tabs */
-        .tab-active { background-color: #d3e3fd; color: #041e49; font-weight: 600; }
-        .tab-inactive { background-color: transparent; color: #444746; }
-
         /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: transparent; }
@@ -254,13 +250,11 @@
     <!-- PREVIEW PANEL (Right) -->
     <main id="panel-preview" class="hidden md:flex flex-grow flex-col h-full bg-md-sys-surface overflow-hidden relative">
         <div class="flex-none px-6 pt-6 pb-3 flex justify-between items-end">
+            <!-- Simplified Header (No Tabs) -->
             <div class="flex bg-white rounded-full p-1 shadow-sm border border-gray-200">
-                <button onclick="switchTab('markdown')" id="tab-btn-markdown" class="tab-active px-5 py-2 rounded-full text-sm transition-all flex items-center gap-2">
-                    <i class="fab fa-markdown text-lg"></i> <span id="lbl-preview">Aperçu</span>
-                </button>
-                <button onclick="switchTab('json')" id="tab-btn-json" class="tab-inactive px-5 py-2 rounded-full text-sm transition-all flex items-center gap-2">
-                    <i class="fas fa-code text-xs"></i> JSON
-                </button>
+                <div class="px-5 py-2 rounded-full text-sm flex items-center gap-2 bg-[#d3e3fd] text-[#041e49] font-semibold select-none">
+                    <i class="fas fa-sparkles text-lg"></i> <span id="lbl-preview">Aperçu</span>
+                </div>
             </div>
             
             <div class="flex gap-2">
@@ -288,9 +282,6 @@
                         <i class="fas fa-magic text-6xl mb-4 text-gray-300"></i>
                         <p class="text-xl font-medium text-gray-400" id="txt-empty-state">Remplissez le formulaire<br>pour générer votre prompt</p>
                     </div>
-                </div>
-                <div id="view-json" class="hidden p-0 h-full bg-[#1e1e1e] overflow-auto">
-                    <pre class="p-6 text-sm font-mono text-[#e0e0e0] leading-6"><code id="json-content"></code></pre>
                 </div>
             </div>
         </div>
@@ -405,7 +396,7 @@
             }
         };
 
-        let state = { lang: 'fr', currentTab: 'markdown' };
+        let state = { lang: 'fr' };
 
         function init() {
             renderSelects();
@@ -533,7 +524,6 @@
 
             document.getElementById('markdown-content').innerText = prompt;
             document.getElementById('mobile-markdown-content').innerText = prompt;
-            document.getElementById('json-content').innerText = JSON.stringify({ cadrez: { c: role, a: task, d: context, r: { method, data: resources }, e: { tone, format, constraints }, z: zero } }, null, 2);
         }
 
         function copyContent() {
@@ -545,19 +535,6 @@
                 toast.classList.remove('opacity-0', 'scale-90');
                 setTimeout(() => toast.classList.add('opacity-0', 'scale-90'), 2500);
             });
-        }
-
-        function switchTab(tab) {
-            state.currentTab = tab;
-            const isMd = tab === 'markdown';
-            document.getElementById('view-markdown').classList.toggle('hidden', !isMd);
-            document.getElementById('view-json').classList.toggle('hidden', isMd);
-            
-            const activeClass = "tab-active px-5 py-2 rounded-full text-sm transition-all flex items-center gap-2";
-            const inactiveClass = "tab-inactive px-5 py-2 rounded-full text-sm transition-all flex items-center gap-2";
-            
-            document.getElementById('tab-btn-markdown').className = isMd ? activeClass : inactiveClass;
-            document.getElementById('tab-btn-json').className = !isMd ? activeClass : inactiveClass;
         }
 
         function showMobileTab(tab) {
