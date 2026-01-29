@@ -8,38 +8,40 @@
 ## 🇫🇷 Français
 
 ### Description
-**Plan Promptable** est un générateur de prompts interactif basé sur la méthode **CADREZ** (Collaborateur, Action, Description, Ressources, Exigences, Zéro oubli). Cette application web "single-file" permet de structurer des instructions précises et efficaces pour les IA génératives comme ChatGPT, Gemini ou Claude.
+**Plan Promptable** est un générateur de prompts interactif et intelligent basé sur la méthode **CADREZ** (Collaborateur, Action, Description, Ressources, Exigences, Zéro oubli). Cette application web "single-file" permet de structurer des instructions professionnelles et optimisées pour les IA génératives telles que ChatGPT, Gemini ou Claude.
 
 ### Fonctionnalités clés
-* **Structure CADREZ** : Champs guidés pour ne négliger aucun aspect du prompt.
-* **Mode Bilingue** : Interface disponible en Français et en Anglais.
-* **Aperçu Temps Réel** : Visualisation instantanée du prompt final au format Markdown ou JSON.
-* **Bibliothèque de Suggestions** : Rôles, verbes d'action et méthodes (SWOT, AIDA, etc.) pré-intégrés.
-* **Zéro Oubli** : Option pour forcer l'IA à poser des questions clarificatrices avant l'exécution.
+* **Structure CADREZ** : Champs guidés pour une ingénierie de prompt (Prompt Engineering) rigoureuse.
+* **Modèles prêts à l'emploi** : Bibliothèque de templates intégrée (SEO, Email, Code, etc.) pour gagner du temps.
+* **Historique local** : Sauvegardez et restaurez vos prompts directement dans votre navigateur via le LocalStorage.
+* **Compteur de tokens** : Estimation en temps réel de la longueur de votre prompt pour optimiser les fenêtres de contexte.
+* **Interface material 3** : Design moderne, réactif et bilingue (FR/EN).
+* **Zéro oubli** : Activation d'une clause de sécurité forçant l'IA à poser des questions clarificatrices.
 
 ### Installation & utilisation
 1.  Téléchargez le fichier `index.html`.
-2.  Ouvrez-le dans n'importe quel navigateur moderne (aucune installation ou serveur requis).
-3.  Remplissez les sections et cliquez sur "Copier" pour utiliser votre prompt.
+2.  Ouvrez-le dans n'importe quel navigateur moderne (aucune installation, serveur ou dépendance externe requis).
+3.  Utilisez les suggestions ou les modèles, personnalisez votre texte, et cliquez sur **Copier**.
 
 ---
 
 ## 🇺🇸 English
 
 ### Description
-**The Promptable Plan** is an interactive prompt generator based on the **CADREZ** framework (Collaborator, Action, Description, Resources, Requirements, Zero Oversight). This single-file web application helps users structure precise and effective instructions for Generative AIs such as ChatGPT, Gemini, or Claude.
+**The Promptable Plan** is an interactive and smart prompt generator based on the **CADREZ** framework (Collaborator, Action, Description, Resources, Requirements, Zero Oversight). This single-file web application structures professional and optimized instructions for Generative AIs like ChatGPT, Gemini, or Claude.
 
 ### Key Features
-* **CADREZ Framework**: Guided fields to ensure every aspect of the prompt is covered.
-* **Bilingual Support**: Interface available in both French and English.
-* **Real-time Preview**: Instant visualization of the final prompt in Markdown or JSON format.
-* **Suggestion Library**: Pre-integrated roles, action verbs, and frameworks (SWOT, AIDA, etc.).
-* **Zero Oversight**: Option to compel the AI to ask clarifying questions before starting the task.
+* **CADREZ Framework**: Guided fields for rigorous prompt engineering.
+* **Ready-to-use Templates**: Integrated template library (SEO, Email, Code, etc.) to save time.
+* **Local History**: Save and restore your prompts directly in your browser using LocalStorage.
+* **Token Counter**: Real-time estimation of prompt length to optimize context windows.
+* **Material 3 Interface**: Modern, responsive, and bilingual (FR/EN) design.
+* **Zero Oversight**: Safety clause that forces the AI to ask clarifying questions before execution.
 
 ### Installation & Usage
 1.  Download the `index.html` file.
-2.  Open it in any modern web browser (no installation or server needed).
-3.  Fill in the sections and click "Copy" to use your prompt.
+2.  Open it in any modern web browser (no installation, server, or external dependencies required).
+3.  Use suggestions or templates, customize your text, and click **Copy**.
 
 ## Licence / License
 Ce projet est sous licence **MIT**. Voir le fichier [LICENSE](LICENSE) pour plus de détails.
