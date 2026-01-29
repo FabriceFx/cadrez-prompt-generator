@@ -231,16 +231,23 @@
                 </label>
             </div>
             
+            <!-- Mobile Footer (Visible only on mobile inside scroll) -->
+            <div class="md:hidden pt-8 pb-4 text-center border-t border-gray-100 mt-4">
+                <p class="text-xs text-gray-500 mb-2"><span id="lbl-developed-mobile">Développé par</span> <strong class="text-gray-700">Fabrice Faucheux</strong></p>
+                <a href="https://paypal.me/FFaucheux?country.x=FR&locale.x=fr_FR" target="_blank" class="text-xs inline-flex items-center gap-2 px-4 py-2 bg-[#003087] text-white rounded-full hover:bg-[#001c64] transition shadow-sm font-medium">
+                    <i class="fab fa-paypal"></i> <span id="lbl-tip-mobile">M'offrir un pourboire</span>
+                </a>
+            </div>
+            
             <div class="h-6"></div> 
         </div>
 
-        <!-- FOOTER -->
-        <footer class="p-4 border-t border-gray-200 bg-gray-50 text-center flex-none">
-            <p class="text-xs text-gray-500 leading-relaxed">
-                Développé par <a href="https://github.com/fabricefx" target="_blank" class="font-medium text-gray-700 hover:text-md-sys-primary transition-colors">Fabrice Faucheux</a>
-                <br>
-                <span class="opacity-75" id="txt-footer-credit">Basé sur la méthode CADREZ</span>
-            </p>
+        <!-- FOOTER (Desktop Only) -->
+        <footer class="hidden md:block flex-none p-4 border-t border-gray-200 bg-gray-50 text-center">
+             <p class="text-xs text-gray-500 mb-2"><span id="lbl-developed">Développé par</span> <strong class="text-gray-700">Fabrice Faucheux</strong></p>
+             <a href="https://paypal.me/FFaucheux?country.x=FR&locale.x=fr_FR" target="_blank" class="text-xs inline-flex items-center gap-2 px-4 py-2 bg-[#003087] text-white rounded-full hover:bg-[#001c64] transition shadow-sm font-medium">
+                <i class="fab fa-paypal"></i> <span id="lbl-tip">M'offrir un pourboire</span>
+            </a>
         </footer>
     </aside>
 
@@ -327,7 +334,8 @@
                 "txt-e-title": "Exigences", "txt-e-sub": "Le résultat doit...", "lbl-e-tone": "Ton & Style", "lbl-e-format": "Format Livrable", "lbl-e-const": "Contraintes négatives (Pas de...)",
                 "txt-z-title": "Zéro oubli", "lbl-z-check": "Activer la sécurisation", "lbl-z-sub": "\"Avant de commencer, pose-moi toutes les questions...\"",
                 "lbl-preview": "Aperçu", "btn-copy-txt": "Copier", "txt-empty-state": "Remplissez le formulaire<br>pour générer votre prompt",
-                "txt-footer-credit": "Basé sur la méthode CADREZ",
+                "lbl-developed": "Développé par", "lbl-tip": "M'offrir un pourboire",
+                "lbl-developed-mobile": "Développé par", "lbl-tip-mobile": "M'offrir un pourboire",
                 "lbl-nav-edit": "Éditer", "lbl-nav-view": "Résultat", "lbl-mob-title": "Votre Prompt", "btn-mob-copy": "Copier", "txt-toast": "Prompt copié !",
                 "btn-tag-target": "+ Cible", "btn-tag-tech": "+ Technique", "btn-tag-biz": "+ Business"
             },
@@ -339,7 +347,8 @@
                 "txt-e-title": "Requirements", "txt-e-sub": "The result must...", "lbl-e-tone": "Tone & Style", "lbl-e-format": "Deliverable Format", "lbl-e-const": "Negative constraints (No...)",
                 "txt-z-title": "Zero Oversight", "lbl-z-check": "Enable Quality Check", "lbl-z-sub": "\"Before starting, ask me all questions...\"",
                 "lbl-preview": "Preview", "btn-copy-txt": "Copy", "txt-empty-state": "Fill out the form<br>to generate your prompt",
-                "txt-footer-credit": "Based on the CADREZ method",
+                "lbl-developed": "Developed by", "lbl-tip": "Leave a tip",
+                "lbl-developed-mobile": "Developed by", "lbl-tip-mobile": "Leave a tip",
                 "lbl-nav-edit": "Edit", "lbl-nav-view": "Result", "lbl-mob-title": "Your Prompt", "btn-mob-copy": "Copy", "txt-toast": "Prompt Copied!",
                 "btn-tag-target": "+ Target", "btn-tag-tech": "+ Tech", "btn-tag-biz": "+ Business"
             }
@@ -416,7 +425,8 @@
             const t = uiTranslations[state.lang];
             for (const [id, text] of Object.entries(t)) {
                 const el = document.getElementById(id);
-                if (el) el.innerText = text;
+                // Utilisation de innerHTML au lieu de innerText pour interpréter les balises <br>
+                if (el) el.innerHTML = text;
             }
         }
 
