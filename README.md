@@ -22,6 +22,7 @@
 1.  Téléchargez le fichier `index.html`.
 2.  Ouvrez-le dans n'importe quel navigateur moderne (aucune installation, serveur ou dépendance externe requis).
 3.  Utilisez les suggestions ou les modèles, personnalisez votre texte, et cliquez sur **Copier**.
+4.  Ou directement sur https://fabricefx.github.io/cadrez-prompt-generator/
 
 ---
 
